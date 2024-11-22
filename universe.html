@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Universe</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #001d66;
+      color: white;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #universe {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    header {
+      background-color: #001d66;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    header .logo img {
+      height: 40px;
+      margin-right: 15px;
+    }
+
+    header nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 1em;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    header nav a:hover {
+      color: #4caf50;
+    }
+
+    header .level-info {
+      background: #4caf50;
+      padding: 5px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .level-info {
+      background: #4caf50;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.8em;
+    }
+
+    .shortcuts {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 29, 102, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 0.8em;
+      color: white;
+    }
+
+    .shortcuts ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .shortcuts ul li {
+      margin: 5px 0;
+    }
+
+    .tooltip {
+      position: absolute;
+      display: none;
+      background: rgba(0, 29, 102, 0.9);
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 0.8em;
+      color: white;
+      z-index: 20;
+    }
+  </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+    <img src="bitacademy_logo.png" alt="bit academy logo" class="d-inline-block align-text-top" style="width: auto;">
+        </div>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="universe.html">Universe</a>
+          <a href="reviews.html">Reviews</a>
+          <a href="#">Ontwikkeling</a>
+        </nav>
+        <div class="level-info">Level 603 - 85%</div>
+      </header>
+
+  <div id="universe"></div>
+
+  <div class="shortcuts">
+    <ul>
+      <li><b>Shortcuts:</b></li>
+      <li><strong>R</strong>: Reset view</li>
+      <li><strong>Ctrl+F</strong>: Search</li>
+      <li><strong>Scroll</strong>: Zoom in/out</li>
+      <li><strong>Click + Drag</strong>: Pan around</li>
+    </ul>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    // Create a universe canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    document.getElementById('universe').appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+
+    // Configuration for "galaxy" nodes
+    const nodes = [];
+    const connections = [];
+    const tooltip = document.getElementById('tooltip');
+
+    function createNode(x, y, size, label) {
+      return { x, y, size, label, hovered: false };
+    }
+
+    function createConnection(from, to) {
+      return { from, to };
+    }
+
+    for (let i = 0; i < 50; i++) {
+      nodes.push(createNode(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height,
+        Math.random() * 10 + 5,
+        `Node ${i + 1}`
+      ));
+    }
+
+    for (let i = 0; i < 100; i++) {
+      const from = Math.floor(Math.random() * nodes.length);
+      const to = Math.floor(Math.random() * nodes.length);
+      if (from !== to) {
+        connections.push(createConnection(nodes[from], nodes[to]));
+      }
+    }
+
+    function drawUniverse() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 1;
+      connections.forEach(({ from, to }) => {
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      });
+
+      nodes.forEach(node => {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+        ctx.fillStyle = node.hovered ? '#4caf50' : 'white';
+        ctx.fill();
+      });
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+      let hoveredNode = null;
+
+      nodes.forEach(node => {
+        const dx = e.clientX - node.x;
+        const dy = e.clientY - node.y;
+        if (Math.sqrt(dx * dx + dy * dy) < node.size) {
+          hoveredNode = node;
+        }
+      });
+
+      if (hoveredNode) {
+        hoveredNode.hovered = true;
+        tooltip.style.left = `${e.clientX + 10}px`;
+        tooltip.style.top = `${e.clientY + 10}px`;
+        tooltip.style.display = 'block';
+        tooltip.textContent = hoveredNode.label;
+      } else {
+        tooltip.style.display = 'none';
+      }
+
+      nodes.forEach(node => {
+        if (node !== hoveredNode) {
+          node.hovered = false;
+        }
+      });
+
+      drawUniverse();
+    });
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drawUniverse();
+    });
+
+    drawUniverse();
+  </script>
+</body>
+
+</html>

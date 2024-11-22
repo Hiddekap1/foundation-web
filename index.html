@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bit Academy Dashboard</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+
+
+.box {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+}
+
+    
+   body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #333;
+    }
+
+    header {
+      background-color: #001d66;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    header .logo img {
+      height: 40px;
+      margin-right: 15px;
+    }
+
+    header nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 1em;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    header nav a:hover {
+      color: #4caf50;
+    }
+
+    header .level-info {
+      background: #4caf50;
+      padding: 5px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .box {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .wide {
+      grid-column: span 12;
+    }
+
+    .half {
+      grid-column: span 6;
+    }
+
+    .quarter {
+      grid-column: span 3;
+    }
+
+    h2,
+    h3 {
+      margin-top: 0;
+      color: #001d66;
+    }
+
+    .week-goals input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .week-goals button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .week-goals button:hover {
+      background-color: #45a049;
+    }
+
+    .schedule .schedule-bar {
+      height: 20px;
+      background: #001d66;
+      margin: 5px 0;
+      color: white;
+      text-align: center;
+      line-height: 20px;
+      border-radius: 5px;
+      font-size: 0.9em;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .badges img {
+      max-width: 100px;
+      height: auto;
+      margin-right: 10px;
+    }
+
+    .badge-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .badge-item i {
+      margin-right: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9em;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      color: #555;
+    }
+
+    td.status {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #4caf50;
+    }
+
+    .donut-chart {
+      width: 150px;
+      height: 150px;
+      background: conic-gradient(#4caf50 40%, #f44336 20%, #ff9800 40%);
+      border-radius: 50%;
+      margin: auto;
+    }
+
+    .attendance {
+      text-align: center;
+    }
+
+    .attendance p {
+      margin: 10px 0;
+      font-size: 0.9em;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+      width: 100%;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+<img src="bitacademy_logo.png" alt="bit academy logo" class="d-inline-block align-text-top" style="width: auto;">
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="universe.html">Universe</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="#">Ontwikkeling</a>
+    </nav>
+    <div class="level-info">Level 603 - 85%</div>
+  </header>
+
+  <div class="container">
+    <div class="box week-goals wide">
+      <h2>Mijn weekdoelen</h2>
+      <input type="text" placeholder="Doel 1">
+      <button>Opslaan</button>
+    </div>
+
+    <div class="box half">
+      <h2>Rooster Deze Week</h2>
+      <div class="schedule">
+        <div class="schedule-bar" style="width: 100%;">Deep Dive </div>
+        <div class="schedule-bar" style="width: 100%;">Deep Dive</div>
+        <div class="schedule-bar" style="width: 100%;">Deep Dive</div>
+        <div class="schedule-bar" style="width: 100%;">Deep Dive</div>
+        <div class="schedule-bar" style="width: 100%;">Deep Dive</div>
+      </div>
+    </div>
+
+    <div class="box quarter">
+      <h3>Streak</h3>
+      <p>Je hebt de volgende dagen gewerkt:</p>
+      <ul>
+        <li>Maandag</li>
+        <li>Dinsdag</li>
+        <li>Woensdag</li>
+        <li>Donderdag</li>
+      </ul>
+    </div>
+    <div class="box quarter">
+      <h3>Software Developer</h3>
+      <div class="donut-chart"></div>
+      <p style="text-align: center; margin-top: 10px;">60%</p>
+    </div>
+
+    <div class="box half">
+      <h2>Mijn laatste badges</h2>
+      <div class="badges">
+        <div class="badge-item">
+          <i class="fas fa-certificate"></i>
+          <img src="badge1.png" alt="Perfect Module Badge">
+        </div>
+        <div class="badge-item">
+          <i class="fas fa-trophy"></i>
+          <img src="badge2.png" alt="Exercise Boss Badge">
+        </div>
+      </div>
+    </div>
+
+    <div class="box half">
+      <h2>Programming Skills</h2>
+      <div class="chart-container">
+        <canvas id="programmingSkillsChart"></canvas>
+      </div>
+    </div>
+
+    <div class="box half">
+      <h2>Recente Exercises</h2>
+      <table>
+        <tr>
+          <th>Naam</th>
+          <th>Laatste Actie</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Foundation for a dashboard</td>
+          <td>1 uur geleden</td>
+          <td class="status">In Progress</td>
+        </tr>
+        <tr>
+          <td>For Upgrade</td>
+          <td>5 dagen geleden</td>
+          <td class="status">In Progress</td>
+        </tr>
+        <tr>
+          <td>Change My Element</td>
+          <td>1 week geleden</td>
+          <td class="status" style="color: #ff9800;">Open for Improvements</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box half attendance">
+      <h2>Mijn Aanwezigheid (30 dagen)</h2>
+      <div class="donut-chart"></div>
+      <p>Op tijd: 60%, Te Laat: 40%</p>
+    </div>
+  </div>
+
+  <script>
+    var ctx = document.getElementById('programmingSkillsChart').getContext('2d');
+    var programmingSkillsChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js'],
+        datasets: [{
+          label: 'Programming Skills',
+          data: [80, 75, 40, 20, 55],
+          backgroundColor: 'rgba(76, 175, 80, 0.7)',
+          borderColor: 'rgba(76, 175, 80, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            title: {
+              display: true,
+              text: 'Proficiency (%)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Programming Languages/Frameworks'
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>
